@@ -18,7 +18,7 @@
  size relationally to the other elements of the page.
  
  2.A UILabel with text describing how awesome you are inside of it, that changes
- between two fonts depending on which button was pressed.
+ between two fonts depending on which button was pressed. ✔
  
  3.A popup notification that alerts us to when a font was changed.
  
@@ -29,6 +29,18 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var ftUILabel: UILabel!
+    
+    @IBAction func ftUIButton1(_ sender: UIButton)
+    {
+        ftUILabel.font = UIFont.systemFont(ofSize: 20.0)
+    }
+    
+    @IBAction func ftUIButton2(_ sender: UIButton)
+    {
+        ftUILabel.font = UIFont.systemFont(ofSize: 30.0)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
