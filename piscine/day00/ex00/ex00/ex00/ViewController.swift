@@ -19,14 +19,6 @@
 
 import UIKit
 
-/*
-func
-{
-    
-}
-*/
-
-
 class ViewController: UIViewController
 {
     let message = "Hello World!"
