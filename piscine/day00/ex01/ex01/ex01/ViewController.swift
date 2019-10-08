@@ -15,7 +15,7 @@
  
  Our app should have as follows:
  1.Two buttons side by side that adapt to the rotation of the screen and change
- size relationally to the other elements of the page.
+ size relationally to the other elements of the page. ✔
  
  2.A UILabel with text describing how awesome you are inside of it, that changes
  between two fonts depending on which button was pressed. ✔
@@ -25,13 +25,29 @@
  Pro Tip: Look up StackView, and see if you want to use it with autolayout.
 */
 
+/*
+ To adapt to the rotation of the screen: Click on "Show the Object Library" in
+ utilities.
+ 1. Click and drop "Vertical Stack View" in the storyboard and adjust the size of
+ the view.
+ 2. Click on "Align" found right below the storyboard. Check mark the below:
+    2.a. Horizontally in container.
+    2.b. Vertically in container.
+ 3. Click on "Add New constraints" found right next to Align in the storyboard
+ and check mark the below:
+    3.a. Width.
+    3.b. Height.
+ 4. Drag and drop UILabel and UIButton inside Vertical Stack View.
+*/
+
 import UIKit
 
-class ViewController: UIViewController {
-
-    
+class ViewController: UIViewController
+{
     @IBOutlet weak var ftUILabel: UILabel!
+// Adding the below for autolay out
     
+// Adding the above for autolay out
     @IBAction func ftUIButton1(_ sender: UIButton)
     {
         ftUILabel.font = UIFont.systemFont(ofSize: 20.0)
@@ -39,7 +55,8 @@ class ViewController: UIViewController {
     
     @IBAction func ftUIButton2(_ sender: UIButton)
     {
-        ftUILabel.font = UIFont.systemFont(ofSize: 30.0)
+        ftUILabel.font = UIFont.systemFont(ofSize: 15.0)
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
