@@ -20,7 +20,7 @@
  2.A UILabel with text describing how awesome you are inside of it, that changes
  between two fonts depending on which button was pressed. ✔
  
- 3.A popup notification that alerts us to when a font was changed.
+ 3.A popup notification that alerts us to when a font was changed. ✔
  
  Pro Tip: Look up StackView, and see if you want to use it with autolayout.
 */
@@ -45,18 +45,26 @@ import UIKit
 class ViewController: UIViewController
 {
     @IBOutlet weak var ftUILabel: UILabel!
-// Adding the below for autolay out
     
-// Adding the above for autolay out
+// Below is the notification alert function
+    func showAlert(headerTitle:String, bodyMessage:String, dismiss:String)
+    {
+        let alert = UIAlertController(title: headerTitle, message: bodyMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: dismiss, style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+// Above is the notification alert function
+
     @IBAction func ftUIButton1(_ sender: UIButton)
     {
         ftUILabel.font = UIFont.systemFont(ofSize: 20.0)
+        showAlert(headerTitle: "Notification", bodyMessage: "Font is changed to 20.0", dismiss: "Ok")
     }
     
     @IBAction func ftUIButton2(_ sender: UIButton)
     {
         ftUILabel.font = UIFont.systemFont(ofSize: 15.0)
-        
+        showAlert(headerTitle: "Notification", bodyMessage: "Font is chanegd to 15.0", dismiss: "Ok")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
