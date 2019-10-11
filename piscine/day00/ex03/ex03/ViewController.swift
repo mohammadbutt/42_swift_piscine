@@ -25,14 +25,16 @@ class ViewController: UIViewController
     @IBOutlet weak var ftDatePicker: UIDatePicker!
     
     @IBOutlet weak var ftCountDownLabel: UILabel!
-    
+ 
+    weak var timer = Timer() // time is declared here so time can be invalidated from any function
+
     @IBAction func ftStartButton(_ sender: UIButton)
     {
-        print("Hello")
+//      print("Hello")
         reminderApp()
         runFtCountdown()
     }
-  
+
     func reminderApp()
     {
 // 1: Ask the user for permission. Assume permission is already given in this case
@@ -52,7 +54,7 @@ class ViewController: UIViewController
         let ftDate = ftDatePicker.date
         let ftCalendar = ftDatePicker.calendar
         ftDateComponent = (ftCalendar?.dateComponents([.day, .hour, .minute, .second], from: ftDate))!
-        let trigger = UNCalendarNotificationTrigger(dateMatching: ftDateComponent, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: ftDateComponent, repeats: true)
         
 // 4: Create the request
         let uuidString = UUID().uuidString
@@ -63,49 +65,66 @@ class ViewController: UIViewController
         {
             (error) in
         }
-        print("date:\(ftDate)")
-        print("ftDateComponent:\(ftDateComponent)")
+//        print("date:\(ftDate)")
+//        print("ftDateComponent:\(ftDateComponent)")
     }
- 
+
+// 6. Get the date componenets to update the time for countdown.
+// A variable when declared and initialized can also be put in a function as below to use the return value
     var ftCountDown: DateComponents
     {
         return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(),
                                                to: ftDatePicker.date)
     }
+
+// 7. Timer for Countdown is updated and displayed onto the ftCountDownLabel
+// An if statement is added to invalidate time if the seconds and minutes are equal to or less than 0.
+    
     @objc func ftUpdateTimer()
     {
+
         let ftDay  = ftCountDown.day!
         let ftHour = ftCountDown.hour!
         let ftMinute = ftCountDown.minute!
         let ftSecond = ftCountDown.second!
-        
-        if (ftDay >= 0 && ftHour >= 0 && ftMinute >= 0 && ftSecond >= 0)
-        {
+
+//      print("Coming into ftUpdateTimer")
+      print("Second:\(ftSecond)")
         ftCountDownLabel.text = String(format: "%02d:%02d:%02d:%02d", ftDay, ftHour, ftMinute, ftSecond)
+
+        if(ftDay == 0 && ftHour == 0 && ftMinute <= 0 && ftSecond <= 0)
+        {
+//            print("-------------------------Entering invalidate-----------------------")
+            timer?.invalidate()
+            return
         }
-        print("day:\(ftDay)")
-        print("Hour:\(ftHour)")
-        print("Minute:\(ftMinute)")
-        print("Second:\(ftSecond)")
     }
+
+/*
+     8. Time in invalidated and Timer scheduled is used to call ftUpdateTimer function to update time
+     Function runFtCountDown() is started by invalidating the time first, what that means is that if there is
+     already an occurence of time running, then current time invalidated, before a new instance of time can
+     be started.
+     Not invalidating time properly, can have mulitple instances of time running at the same time causing the
+     program to use more memory.
+*/
     func runFtCountdown()
     {
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ftUpdateTimer), userInfo: nil, repeats: true)
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ftUpdateTimer),
+                                     userInfo: nil, repeats: true)
     }
-    
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
- 
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-
 }
-
