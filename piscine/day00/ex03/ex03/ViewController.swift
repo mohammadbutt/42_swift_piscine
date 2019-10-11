@@ -89,7 +89,7 @@ class ViewController: UIViewController
         let ftSecond = ftCountDown.second!
 
 //      print("Coming into ftUpdateTimer")
-      print("Second:\(ftSecond)")
+//      print("Second:\(ftSecond)")
         ftCountDownLabel.text = String(format: "%02d:%02d:%02d:%02d", ftDay, ftHour, ftMinute, ftSecond)
 
         if(ftDay == 0 && ftHour == 0 && ftMinute <= 0 && ftSecond <= 0)
