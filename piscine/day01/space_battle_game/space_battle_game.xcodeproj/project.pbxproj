@@ -17,6 +17,8 @@
 		C4E801C023528EDE00225136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4E801BE23528EDE00225136 /* LaunchScreen.storyboard */; };
 		C4E801CB23528EDE00225136 /* space_battle_gameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E801CA23528EDE00225136 /* space_battle_gameTests.swift */; };
 		C4E801D623528EDE00225136 /* space_battle_gameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E801D523528EDE00225136 /* space_battle_gameUITests.swift */; };
+		C4E801E42352B45500225136 /* bulletSoundEffect00.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4E801E32352B45500225136 /* bulletSoundEffect00.wav */; };
+		C4E801E62352B67800225136 /* bulletSoundEffect01.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4E801E52352B67800225136 /* bulletSoundEffect01.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		C4E801D123528EDE00225136 /* space_battle_gameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = space_battle_gameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E801D523528EDE00225136 /* space_battle_gameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = space_battle_gameUITests.swift; sourceTree = "<group>"; };
 		C4E801D723528EDF00225136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C4E801E32352B45500225136 /* bulletSoundEffect00.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bulletSoundEffect00.wav; sourceTree = "<group>"; };
+		C4E801E52352B67800225136 /* bulletSoundEffect01.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bulletSoundEffect01.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 		C4E801AE23528EDA00225136 /* space_battle_game */ = {
 			isa = PBXGroup;
 			children = (
+				C4E801E52352B67800225136 /* bulletSoundEffect01.wav */,
+				C4E801E32352B45500225136 /* bulletSoundEffect00.wav */,
 				C4E801AF23528EDA00225136 /* AppDelegate.swift */,
 				C4E801B123528EDA00225136 /* GameScene.sks */,
 				C4E801B323528EDA00225136 /* Actions.sks */,
@@ -243,6 +249,8 @@
 				C4E801BD23528EDE00225136 /* Assets.xcassets in Resources */,
 				C4E801C023528EDE00225136 /* LaunchScreen.storyboard in Resources */,
 				C4E801B423528EDA00225136 /* Actions.sks in Resources */,
+				C4E801E62352B67800225136 /* bulletSoundEffect01.wav in Resources */,
+				C4E801E42352B45500225136 /* bulletSoundEffect00.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
