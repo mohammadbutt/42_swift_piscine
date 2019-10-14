@@ -8,13 +8,24 @@
 
 import SpriteKit
 import GameplayKit
+import UIKit
+import ImageIO
 
-class GameScene: SKScene
+class GameScene: SKScene, SKPhysicsContactDelegate
 {
     let player = SKSpriteNode(imageNamed: "playership01")
     
     let bulletSound = SKAction.playSoundFileNamed("bulletSoundEffect01.wav", waitForCompletion: false)
+    let enemyExplosion = SKAction.playSoundFileNamed("enemyBoom01.flac", waitForCompletion: false)
+    let playerExplosion = SKAction.playSoundFileNamed("playerBoom01.wav", waitForCompletion: false)
     
+    struct PhysicsCategories
+    {
+        static let None: UInt32 = 0
+        static let Player: UInt32 = 0b1   //1
+        static let Bullet: UInt32 = 0b10  //2
+        static let Enemy: UInt32 =  0b100 //4
+    }
 
 /*
      Below function will generate a random number between min and max range.
@@ -27,8 +38,8 @@ class GameScene: SKScene
      can be achieved because arc4random is an unsigned integer and we cannot modulo an unsigned int with an
      int in swift, but it can be done in C.
 */
-/*
-    func random(min: Int, max: Int) -> Int
+
+    func randomInteger(min: Int, max: Int) -> Int
     {
         var difference: Int = 0
         var newRandomNumber: Int = 0
@@ -40,25 +51,29 @@ class GameScene: SKScene
      
         newRandomNumber = castedRandomNumber % difference
         newRandomNumber = newRandomNumber + min
+        
         return newRandomNumber
     }
- */
+ 
     func random(min: CGFloat, max: CGFloat) -> CGFloat
     {
         var difference: Int = 0
-        var newRandomNumber: Int = 0
-        var newRandomNumberFloat: CGFloat = 0
+        var randomNumber: Int = 0
+        var randomNumberFloat: CGFloat = 0
         var castedRandomNumber: Int = 0
         
         difference = (Int)(max - min)
         difference = difference + 1
         castedRandomNumber = Int(arc4random() / 2)
         
-        newRandomNumber = castedRandomNumber % difference
-        newRandomNumberFloat = CGFloat (newRandomNumber) + min
-    
-        return newRandomNumberFloat
+        randomNumber = castedRandomNumber % difference
+        randomNumberFloat = CGFloat (randomNumber) + min
+        
+        return randomNumberFloat
     }
+    
+    
+    
 // CGRect is a struct that contains the dimensions and location of the rectangle
     var gameArea = CGRect()
     
@@ -78,6 +93,8 @@ class GameScene: SKScene
     
     override func didMove(to view: SKView)
     {
+        self.physicsWorld.contactDelegate = self
+        
         let background = SKSpriteNode(imageNamed: "background06")
         background.size = self.size
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
@@ -87,8 +104,113 @@ class GameScene: SKScene
         player.setScale(0.2)
         player.position = CGPoint(x: self.size.width/2, y: self.size.height/5)
         player.zPosition = 2
+        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+        player.physicsBody!.affectedByGravity = false
+        player.physicsBody!.categoryBitMask = PhysicsCategories.Player
+        player.physicsBody!.collisionBitMask = PhysicsCategories.None
+        player.physicsBody!.contactTestBitMask = PhysicsCategories.Enemy
         self.addChild(player)
+        
+        startNewLevel()
     }
+    
+    func didBegin(_ contact: SKPhysicsContact)
+    {
+        var body1 = SKPhysicsBody()
+        var body2 = SKPhysicsBody()
+        
+        if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
+        {
+            body1 = contact.bodyA
+            body2 = contact.bodyB
+        }
+        else
+        {
+            body1 = contact.bodyB
+            body2 = contact.bodyA
+        }
+        
+        // If the player hits the enemy
+        if (body1.categoryBitMask == PhysicsCategories.Player && body2.categoryBitMask == PhysicsCategories.Enemy)
+        {
+            // If there is an object only then will an explosion be caused
+//            if (body1.node != nil) // May not be necessary
+ //           {
+                spawnExplosionPlayer(spawnPosition: body1.node!.position)
+  //          }
+//            if (body2.node != nil)
+//            {
+                spawnExplosionPlayer(spawnPosition: body2.node!.position)
+//            }
+            body1.node?.removeFromParent()
+            body2.node?.removeFromParent()
+        }
+        
+        // If the bullet hits the enemy
+        if(body1.categoryBitMask == PhysicsCategories.Bullet && body2.categoryBitMask == PhysicsCategories.Enemy)
+        {
+            if((body2.node?.position.y)! < self.size.height) // Might be able to remove this
+            {
+  //              if(body2.node != nil)
+    //            {
+                    spawnExplosion(spawnPosition: body2.node!.position)
+  //              }
+                body1.node?.removeFromParent()
+                body2.node?.removeFromParent()
+            }
+        }
+    }
+    
+    func spawnExplosion(spawnPosition: CGPoint)
+    {
+        let explosion = SKSpriteNode(imageNamed: "explosion04")
+// Experimental below
+        
+
+// Experimental above
+        explosion.position = spawnPosition
+        explosion.zPosition = 3
+        explosion.setScale(0)
+        self.addChild(explosion)
+        
+        let scaleIn = SKAction.scale(to: 1, duration: 0.1)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.1)
+        let delete = SKAction.removeFromParent()
+        
+        let explosionSequence = SKAction.sequence([enemyExplosion, scaleIn, fadeOut, delete])
+        
+        explosion.run(explosionSequence)
+    }
+// Below is expperimental to run on player ship
+
+    func spawnExplosionPlayer(spawnPosition: CGPoint)
+    {
+        let explosion = SKSpriteNode(imageNamed: "explosion01")
+        explosion.position = spawnPosition
+        explosion.zPosition = 3
+        explosion.setScale(5)
+        self.addChild(explosion)
+        
+        let scaleIn = SKAction.scale(to: 1, duration: 0.1)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.1)
+        let delete = SKAction.removeFromParent()
+        
+        let explosionSequence = SKAction.sequence([playerExplosion, scaleIn, fadeOut, delete])
+        
+        explosion.run(explosionSequence)
+    }
+    
+// Above is experimental to run on player ship
+    
+    func startNewLevel()
+    {
+        let spawn = SKAction.run(spawnEnemy)
+        let waitToSpaw = SKAction.wait(forDuration: 1)
+        let spawnSequence = SKAction.sequence([waitToSpaw, spawn])
+        let spawnForever = SKAction.repeatForever(spawnSequence)
+        self.run(spawnForever)
+    }
+    
 /*
     func fireBullet()
     {
@@ -97,40 +219,57 @@ class GameScene: SKScene
         bullet.zRotation = CGFloat((90 * (Double.pi/180))) // or  1.57
         bullet.position = player.position
         player.zPosition = 1
+        bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
+        bullet.physicsBody!.affectedByGravity = false
+        bullet.physicsBody!.categoryBitMask = PhysicsCategories.Bullet
+        bullet.physicsBody!.collisionBitMask = PhysicsCategories.None
+        bullet.physicsBody!.contactTestBitMask = PhysicsCategories.Enemy
         self.addChild(bullet)
         
         let moveBullet = SKAction.moveTo(y: self.size.height + bullet.size.height, duration: 1)
         let deleteBullet = SKAction.removeFromParent()
-        let bulletSequence = SKAction.sequence([moveBullet, deleteBullet])
+        
+        let bulletSequence = SKAction.sequence([bulletSound, moveBullet, deleteBullet])
         bullet.run(bulletSequence)
     }
 */
 
     func fireBullet()
     {
-        let bullet = SKSpriteNode(imageNamed: "bullet13")
-        bullet.setScale(1)
+        let bullet = SKSpriteNode(imageNamed: "bullet16")
+        bullet.setScale(0.05)
         bullet.position = player.position
         player.zPosition = 1
+        bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
+        bullet.physicsBody!.affectedByGravity = false
+        bullet.physicsBody!.categoryBitMask = PhysicsCategories.Bullet
+        bullet.physicsBody!.collisionBitMask = PhysicsCategories.None
+        bullet.physicsBody!.contactTestBitMask = PhysicsCategories.Enemy
         self.addChild(bullet)
         
         let moveBullet = SKAction.moveTo(y: self.size.height + bullet.size.height, duration: 1)
         let deleteBullet = SKAction.removeFromParent()
+        
         let bulletSequence = SKAction.sequence([bulletSound, moveBullet, deleteBullet])
         bullet.run(bulletSequence)
     }
-    
+
     func spawnEnemy()
     {
-        let randomXStart = random(min: (gameArea.maxX), max: (gameArea.minX))
-        let randomXEnd = random(min: gameArea.maxX, max: (gameArea.minX))
+        let randomXStart = random(min: gameArea.minX, max: gameArea.maxX)
+        let randomXEnd = random(min: gameArea.minX, max: gameArea.maxX)
         
         let startPoint = CGPoint(x: randomXStart, y: self.size.height * 1.2)
         let endPoint = CGPoint(x: randomXEnd, y: -self.size.height * 0.2)
         let enemy = SKSpriteNode(imageNamed: "enemyship01")
-        enemy.setScale(0.2)
+        enemy.setScale(0.15)
         enemy.position = startPoint
         enemy.zPosition = 2
+        enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
+        enemy.physicsBody!.affectedByGravity = false
+        enemy.physicsBody!.categoryBitMask = PhysicsCategories.Enemy
+        enemy.physicsBody!.collisionBitMask = PhysicsCategories.None
+        enemy.physicsBody!.contactTestBitMask = PhysicsCategories.Player | PhysicsCategories.Bullet
         self.addChild(enemy)
         
         let moveEnemy = SKAction.move(to: endPoint, duration: 1.5)
@@ -138,6 +277,10 @@ class GameScene: SKScene
         let enemySequence = SKAction.sequence([moveEnemy, deleteEnemy])
         enemy.run(enemySequence)
         
+        let deltaX = endPoint.x - startPoint.x
+        let deltaY = endPoint.y - startPoint.y
+        let amountToRotate = atan2(deltaY, deltaX)
+        enemy.zRotation = amountToRotate
         
     }
 
@@ -146,6 +289,9 @@ class GameScene: SKScene
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         fireBullet()
+//        spawnEnemy()
+//        print("RandomInter: %d", randomInteger(min: 10, max: 15))
+//        print("Randomfloat:%f", random(min: 10, max: 15))
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
