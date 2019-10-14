@@ -4,6 +4,8 @@
 //
 //  Created by Mohammad Butt on 10/12/19.
 //  Copyright © 2019 Mohammad Butt. All rights reserved.
+// Reference: www.youtube.com/watch?v=mvlwZs2ehLU&list=WL&index=2&t=9s series
+// Resources: ezgif.com/sprite-cutter - to split/cut up laser sprites
 //
 
 import SpriteKit
@@ -13,6 +15,14 @@ import ImageIO
 
 class GameScene: SKScene, SKPhysicsContactDelegate
 {
+    var gameScore = 0
+    let scoreLabel = SKLabelNode(fontNamed: "The Bold Font")
+    
+    var livesNumber = 3
+    let livesLabel = SKLabelNode(fontNamed: "The Bold Font")
+    
+    var levelNumber = 0
+    
     let player = SKSpriteNode(imageNamed: "playership01")
     
     let bulletSound = SKAction.playSoundFileNamed("bulletSoundEffect01.wav", waitForCompletion: false)
@@ -111,7 +121,62 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         player.physicsBody!.contactTestBitMask = PhysicsCategories.Enemy
         self.addChild(player)
         
+        scoreLabel.text = "Score: 0"
+        scoreLabel.fontSize = 70
+        scoreLabel.fontColor = SKColor.white
+        scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        scoreLabel.position = CGPoint(x: self.size.width*0.22, y: self.size.height*0.9)
+        scoreLabel.zPosition = 100
+        self.addChild(scoreLabel)
+        
+        livesLabel.text = "Lives: 3"
+        livesLabel.fontSize = 70
+        livesLabel.fontColor = SKColor.white
+        livesLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
+        livesLabel.position = CGPoint(x: self.size.width*0.78, y: self.size.height*0.9)
+        livesLabel.zPosition = 100
+        self.addChild(livesLabel)
+        
         startNewLevel()
+    }
+    
+    func loseALife()
+    {
+        livesNumber -= 1
+        livesLabel.text = "Lives: \(livesNumber)"
+        
+        let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
+        let scaleDown = SKAction.scale(to: 1, duration: 0.2)
+        let scaleSequence = SKAction.sequence([scaleUp, scaleDown])
+        livesLabel.run(scaleSequence)
+        
+        if livesNumber == 0
+        {
+            runGameOver()
+        }
+    }
+    
+    func addScore()
+    {
+        gameScore += 1
+        scoreLabel.text = "Score: \(gameScore)"
+        
+        if gameScore == 10 || gameScore == 15 || gameScore == 20
+        {
+            startNewLevel()
+        }
+    }
+    
+    func runGameOver()
+    {
+        self.removeAllActions()
+        
+        self.enumerateChildNodes(withName: "Bullet")
+        {
+            bullet, stop in
+            bullet.removeAllActions()
+        }
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact)
@@ -144,6 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
 //            }
             body1.node?.removeFromParent()
             body2.node?.removeFromParent()
+            runGameOver()
         }
         
         // If the bullet hits the enemy
@@ -155,6 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     //            {
                     spawnExplosion(spawnPosition: body2.node!.position)
   //              }
+                addScore()
                 body1.node?.removeFromParent()
                 body2.node?.removeFromParent()
             }
@@ -198,11 +265,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     func startNewLevel()
     {
+        levelNumber += 1
+        
+        if self.action(forKey: "spawningEnemies") != nil
+        {
+            self.removeAction(forKey: "spawningEnemies")
+        }
+        
+        var levelDuration = NSTimeIntervalSince1970
+        
+        switch levelNumber
+        {
+        case 1: levelDuration = 1.5
+        case 2: levelDuration = 1.0
+        case 3: levelDuration = 0.5
+        case 4: levelDuration = 0.1
+        default:
+            levelDuration = 0.1
+            print("Cannot find levelNumber info")
+        }
+        
         let spawn = SKAction.run(spawnEnemy)
-        let waitToSpaw = SKAction.wait(forDuration: 1)
+        let waitToSpaw = SKAction.wait(forDuration: levelDuration)
         let spawnSequence = SKAction.sequence([waitToSpaw, spawn])
         let spawnForever = SKAction.repeatForever(spawnSequence)
-        self.run(spawnForever)
+//        self.run(spawnForever)
+        self.run(spawnForever, withKey: "spawningEnemies")
     }
     
 /*
@@ -230,10 +318,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate
 
     func fireBullet()
     {
-        let bullet = SKSpriteNode(imageNamed: "bullet16")
-        bullet.setScale(0.05)
+        let bullet = SKSpriteNode(imageNamed: "bullet18")
+        
+        bullet.name = "Bullet" // bullet now has a reference name of "Bullet"
+        
+        bullet.setScale(3)
+        bullet.zRotation = CGFloat((90 * (Double.pi/180))) // or  1.57
         bullet.position = player.position
-        player.zPosition = 1
+        bullet.zPosition = 1
         bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
         bullet.physicsBody!.affectedByGravity = false
         bullet.physicsBody!.categoryBitMask = PhysicsCategories.Bullet
@@ -268,7 +360,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         let moveEnemy = SKAction.move(to: endPoint, duration: 1.5)
         let deleteEnemy = SKAction.removeFromParent()
-        let enemySequence = SKAction.sequence([moveEnemy, deleteEnemy])
+        let loseALifeAction = SKAction.run(loseALife)
+        let enemySequence = SKAction.sequence([moveEnemy, deleteEnemy, loseALifeAction])
         enemy.run(enemySequence)
         
         let deltaX = endPoint.x - startPoint.x
