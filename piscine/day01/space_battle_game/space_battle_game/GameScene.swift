@@ -21,10 +21,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     struct PhysicsCategories
     {
-        static let None: UInt32 = 0
-        static let Player: UInt32 = 0b1   //1
-        static let Bullet: UInt32 = 0b10  //2
-        static let Enemy: UInt32 =  0b100 //4
+        static let None: UInt32 =  0 //0
+        static let Player: UInt32 = 1 //0b1   //1
+        static let Bullet: UInt32 = 2 //0b10  //2
+        static let Enemy: UInt32 =  4 //0b100 //4
     }
 
 /*
@@ -160,14 +160,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             }
         }
     }
-    
+//
+
     func spawnExplosion(spawnPosition: CGPoint)
     {
         let explosion = SKSpriteNode(imageNamed: "explosion04")
-// Experimental below
-        
-
-// Experimental above
         explosion.position = spawnPosition
         explosion.zPosition = 3
         explosion.setScale(0)
@@ -181,8 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         explosion.run(explosionSequence)
     }
-// Below is expperimental to run on player ship
-
+    
     func spawnExplosionPlayer(spawnPosition: CGPoint)
     {
         let explosion = SKSpriteNode(imageNamed: "explosion01")
@@ -199,8 +195,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         explosion.run(explosionSequence)
     }
-    
-// Above is experimental to run on player ship
     
     func startNewLevel()
     {
