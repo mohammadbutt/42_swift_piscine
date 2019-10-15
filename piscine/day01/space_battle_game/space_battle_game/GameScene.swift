@@ -117,15 +117,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         gameScore = 0 // Score is set to 0, so everytime the game starts the score can start at 0
         self.physicsWorld.contactDelegate = self
         
-        let background = SKSpriteNode(imageNamed: "background06")
-        background.size = self.size
-        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        background.zPosition = 0
-        self.addChild(background)
+        for i in 0...1
+        {
+        
+            let background = SKSpriteNode(imageNamed: "background17")
+            background.name = "Background"
+            background.size = self.size
+            background.anchorPoint = CGPoint(x:0.5, y:0)
+            background.position = CGPoint(x: self.size.width/2, y: self.size.height*CGFloat(i))
+            background.zPosition = 0
+            self.addChild(background)
+        }
         
         player.setScale(0.2)
         player.position = CGPoint(x: self.size.width/2, y: self.size.height/5)
         player.zPosition = 2
+        
+        let spaceshipFire = SKEmitterNode(fileNamed: "spaceshipEmitter.sks")
+        spaceshipFire?.targetNode = self
+        player.addChild(spaceshipFire!)
+        
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody!.affectedByGravity = false
         player.physicsBody!.categoryBitMask = PhysicsCategories.Player
@@ -398,6 +409,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
     }
 
+    var lastUpdateTime: TimeInterval = 0
+    var deltaFrameTime: TimeInterval = 0
+    var amountToMovePerSecond: CGFloat = 600.0
+    
+    override func update(_ currentTime: TimeInterval)
+    {
+        if lastUpdateTime == 0
+        {
+            lastUpdateTime = currentTime
+        }
+        else
+        {
+            deltaFrameTime = currentTime - lastUpdateTime
+            lastUpdateTime = currentTime
+        }
+        
+        let amountToMoveBackground = amountToMovePerSecond * CGFloat(deltaFrameTime)
+        
+        self.enumerateChildNodes(withName: "Background")
+        {
+            background, stop in
+            
+            if(self.currentGameState == gameState.inGame)
+            {
+                background.position.y -= amountToMoveBackground
+            }
+            
+            if(background.position.y < -self.size.height)
+            {
+                background.position.y += self.size.height*2
+            }
+        }
+    }
+    
 // Whenever screen is pressed touchesbegan function is called to perform a function, in this
 // case to fire bullets.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)

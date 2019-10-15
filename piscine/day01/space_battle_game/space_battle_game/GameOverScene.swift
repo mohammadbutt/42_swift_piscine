@@ -15,7 +15,7 @@ class GameOverScene: SKScene
 
     override func didMove(to view: SKView)
     {
-        let background = SKSpriteNode(imageNamed: "background17")
+        let background = SKSpriteNode(imageNamed: "background19")
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         background.zPosition = 0
         self.addChild(background)
