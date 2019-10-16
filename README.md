@@ -3,8 +3,9 @@
 
 ---
 # Table of Contents - Click a section to jump to it
+* [Hello World UI](Day-00---Ex-00---Hello-World-UI)
 
-### Day 00 - Ex 00 - Hello World
+### Day 00 - Ex 00 - Hello World UI
 ![](https://github.com/mohammadbutt/42_swift_piscine/blob/master/Media/day00_ex00_1080p_24fps.gif)
 
 ### Day 00 - Ex 01 - Change font
