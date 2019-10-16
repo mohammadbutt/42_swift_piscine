@@ -1,6 +1,8 @@
 # 42 swift piscine
 ### Pupose of this project is to learn the basics of swift to create iOS apps
 
+It did not take 1 day to create these apps. Spaceship game especially took about 4 days, but the Stopwatch Timer App and Pomodoro Timer app were both created in a day.
+
 ---
 # Table of Contents - Click a section to jump to it
 * [Hello World UI](#Day-00---Ex-00---Hello-World-UI)
