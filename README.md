@@ -8,7 +8,7 @@ Spaceship game did not take 1 day to create, it took about 4 days to create it, 
 * [Hello World UI](#Day-00---Ex-00---Hello-World-UI)
 * [Change Font size](#Day-00---Ex-01---Change-Font-size)
 * [UI Interface with start stop animation](#Day-00---Ex-02---UI-Interface-with-start-stop-animation)
-* [**Countdown Timer app**](#Day-00---Ex-03---Countdown-Timer-App)
+* [**Push Notification App**](#Day-00---Ex-03---Push-Notification-App)
 * [**Spaceship Game**](#Day-01---Spaceship-Game)
 * [**Stopwatch App**](#Day-02---Ex00---Stopwatch-App)
 * [**Pomodoro Timer App**](#Day-02---Ex01---Pomodoro-Timer-App)
@@ -23,7 +23,7 @@ Spaceship game did not take 1 day to create, it took about 4 days to create it, 
 ### Day 00 - Ex 02 - UI Interface with start stop animation
 ![](https://github.com/mohammadbutt/42_swift_piscine/blob/master/Media/day00_ex02_720p_24fps.gif)
 
-### Day 00 - Ex 03 - Countdown Timer App
+### Day 00 - Ex 03 - Push Notification App
 ![](https://github.com/mohammadbutt/42_swift_piscine/blob/master/Media/day00_ex03_720p_24fps.gif)
 
 ### Day 01 - Spaceship Game
