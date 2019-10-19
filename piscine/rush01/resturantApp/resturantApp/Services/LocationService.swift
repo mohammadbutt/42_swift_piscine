@@ -27,11 +27,21 @@ final class LocationService: NSObject
     }
     
     var newLocation: ((Result<CLLocation>) -> Void)?
-    var dudChangeStatus: ((Bool) -> Void)?
+    var didChangeStatus: ((Bool) -> Void)?
     
     var status: CLAuthorizationStatus
     {
         return CLLocationManager.authorizationStatus()
+    }
+    
+    func requestLocationAuthorization()
+    {
+        manager.requestWhenInUseAuthorization()
+    }
+    
+    func getLocation()
+    {
+        manager.requestLocation()
     }
 }
 
@@ -56,7 +66,7 @@ extension LocationService: CLLocationManagerDelegate
         switch status
         {
         case .notDetermined, .restricted, .denied:
-            didChangeSatus?(false)
+            didChangeStatus?(false)
         default:
             didChangeStatus?(true)
         }
