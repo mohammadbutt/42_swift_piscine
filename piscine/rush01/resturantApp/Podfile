@@ -9,3 +9,15 @@ target 'resturantApp' do
     pod 'AlamofireImage'
     pod 'Moya'
 end
+
+# Added below from https://github.com/pichillilorenzo/flutter_inappbrowser/issues/15
+# And https://stackoverflow.com/questions/50458556/flutter-swift-version-must-be-set-to-a-supported-value
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_VERSION'] = '4.0'  # required by simple_permission
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
+end
