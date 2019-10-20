@@ -4,9 +4,10 @@
 //
 //  Created by Mohammad Butt on 10/12/19.
 //  Copyright © 2019 Mohammad Butt. All rights reserved.
-// Reference: www.youtube.com/watch?v=mvlwZs2ehLU&list=WL&index=2&t=9s series
-// Resources: ezgif.com/sprite-cutter - to split/cut up laser sprites
 //
+// Resources: ezgif.com/sprite-cutter - to split/cut up laser sprites
+// I only created random and randomInteger functions
+// Credits: Matt Heaney Apps www.youtube.com/playlist?list=PLrL5aCF7Ods-6C7QjzXibUZoYjMzhWBfL
 
 import SpriteKit
 import GameplayKit
