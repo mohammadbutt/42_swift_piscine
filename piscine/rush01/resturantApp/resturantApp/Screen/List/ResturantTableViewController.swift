@@ -10,7 +10,7 @@ import UIKit
 
 protocol ListActions: class
 {
-    func didTapCell(_ viewModel: ResturantListViewModel)
+    func didTapCell(_ viewController: UIViewController, viewModel: ResturantListViewModel)
 }
 
 
@@ -50,8 +50,11 @@ class ResturantTableViewController: UITableViewController
 // Mark - Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+        guard let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") else { return }
+        navigationController?.pushViewController(detailsViewController, animated: true)
+        
         let vm = viewModels[indexPath.row]
-        delegate?.didTapCell(vm)
+        delegate?.didTapCell(detailsViewController, viewModel: vm)
     }
 }
 

@@ -94,9 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             window.rootViewController = locationViewController
         default:
             let nav = storyboard.instantiateViewController(withIdentifier: "ResturantNavigationController") as? UINavigationController
-            
             self.navigationController = nav
-            
             window.rootViewController = nav
             locationService.getLocation()
             (nav?.topViewController as? ResturantTableViewController)?.delegate = self
@@ -108,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         return true
     }
     
-    private func loadDetails(withId id: String)
+    private func loadDetails(for viewController:UIViewController, withId id: String)
     {
         service.request(.details(id: id))
         {
@@ -121,7 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                {
 //                print("Details:\n\n \(details)")
                     let detailsViewModel = DetailsViewModel(details: details)
-                    (strongSelf.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+                    (viewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+//                    (strongSelf.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
                 }
             case .failure(let error):
                 print("Failed to get details \(error)")
@@ -132,13 +131,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     private func loadBusinesses(with coordinate: CLLocationCoordinate2D)
     {
  //       service.request(.search (lat: 37.570950, long: -122.050613))
-        service.request(.search(lat: coordinate.latitude, long: coordinate.longitude))
+ //       service.request(.search(lat: coordinate.latitude, long: coordinate.longitude))
+        service.request(.search(lat: 37.570950, long: -122.050613)) // Change this to different coordinates to see different results
         {
             [weak self] (result) in
+            guard let strongSelf = self else { return }
+
             switch result
             {
             case .success(let response):
-                guard let strongSelf = self else { return }
+//                guard let strongSelf = self else { return }
                 let root = try? strongSelf.jsonDecoder.decode(Root.self, from: response.data)
                 let viewModels = root?.businesses.compactMap(ResturantListViewModel.init)
                     .sorted(by: {$0.distance < $1.distance})
@@ -148,9 +150,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 let resturantListViewController = nav.topViewController as? ResturantTableViewController
                 {
                     resturantListViewController.viewModels = viewModels ?? []
-                
                 }
-            
+            else if let nav = strongSelf.storyboard.instantiateViewController(withIdentifier: "ResturantNavigationController") as? UINavigationController
+            {
+                strongSelf.navigationController = nav
+                strongSelf.window.rootViewController?.present(nav, animated: true)
+                {
+                
+//                window.rootViewController = nav
+//                locationService.getLocation()
+                    (nav.topViewController as? ResturantTableViewController)?.delegate = self
+                    (nav.topViewController as? ResturantTableViewController)?.viewModels = viewModels ?? []
+
+                }
+            }
             case .failure(let error):
                 print("Error: \(error)")
             }
@@ -164,10 +177,16 @@ extension AppDelegate: LocationActions, ListActions
     {
         locationService.requestLocationAuthorization()
     }
+    func didTapCell(_ viewController: UIViewController, viewModel: ResturantListViewModel)
+    {
+        loadDetails(for: viewController, withId: viewModel.id)
+    }
+/*
     func didTapCell(_ viewModel: ResturantListViewModel)
     {
         loadDetails(withId: viewModel.id)
     }
+ */
 }
 /*
     func applicationWillResignActive(_ application: UIApplication) {
