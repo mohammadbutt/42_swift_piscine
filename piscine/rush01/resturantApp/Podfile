@@ -1,4 +1,8 @@
-platform :ios, '9.0'
+# name of the project with .xcodeproj extension
+project 'resturantApp.xcodeproj'
+
+# platform: ios is the iphone simulator version, not the version of xCode
+platform :ios, '11.0'
 use_frameworks!
 
 target 'resturantApp' do
