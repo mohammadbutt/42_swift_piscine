@@ -5,9 +5,11 @@ project 'resturantApp.xcodeproj'
 platform :ios, '11.0'
 use_frameworks!
 
+
+# '~> ' contains the version of the pods, pod version have to compatible with xCode version and swift version
 target 'resturantApp' do
-    pod 'AlamofireImage'
-    pod 'Moya'
+    pod 'AlamofireImage', '~> 3.4'
+    pod 'Moya', '~> 12.0'
 end
 
 # Added below from https://github.com/pichillilorenzo/flutter_inappbrowser/issues/15

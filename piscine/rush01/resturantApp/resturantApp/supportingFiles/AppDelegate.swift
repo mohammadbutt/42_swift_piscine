@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Moya
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -15,10 +17,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     let window = UIWindow()
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+    let service = MoyaProvider<YelpService.BusinessesProvider>()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
+        
+        service.request(.search (lat: 37.570950, long: -122.050613))
+        {
+            (result) in
+            switch result
+            {
+            case .success(let response):
+                print(try? JSONSerialization.jsonObject(with: response.data, options: []))
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+        
         // Override point for customization after application launch.
         
         switch locationService.status
@@ -28,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             locationViewController?.locationSerivce = locationService
             window.rootViewController = locationViewController
         default:
- //               print("Failed to load location i")
-            assertionFailure()
+                print("Failed to load location i")
+ //           assertionFailure()
         }
         window.makeKeyAndVisible()
         return true
