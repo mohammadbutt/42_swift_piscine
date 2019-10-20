@@ -8,47 +8,167 @@
 
 import UIKit
 import Moya
-
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
-
     let window = UIWindow()
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let service = MoyaProvider<YelpService.BusinessesProvider>()
-
+    let jsonDecoder = JSONDecoder()
+    var navigationController: UINavigationController?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
-        
-        service.request(.search (lat: 37.570950, long: -122.050613))
+/*
+        service.request(.details(id: "WavvLdfdP6g8aZTtbBQHTw"))
         {
             (result) in
             switch result
             {
             case .success(let response):
-                print(try? JSONSerialization.jsonObject(with: response.data, options: []))
+                let details = try? self.jsonDecoder.decode(Details.self, from: response.data)
+                print("Details:\n\n \(details)")
             case .failure(let error):
-                print("Error: \(error)")
+                print("Failed to get details \(error)")
             }
         }
+*/
+/*
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase // converts pythonic snake_case into camelCase
+        locationService.didChangeStatus =
+            {
+                [weak self] success in
+                if success
+                {
+                    self?.locationService.getLocation()
+                }
+            }
+        locationService.newLocation =
+            {
+                [weak self] result in
+                switch result
+                {
+                case .success(let location):
+                    self?.loadBusinesses()
+                case .failure(let error):
+                    assertionFailure("Error getting the users location\(error)")
+                }
+            }
+ */
+ // Pasting below this
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
+        locationService.didChangeStatus =
+            {
+                [weak self] success in
+                if success
+                {
+                    self?.locationService.getLocation()
+                }
+        }
+        
+        locationService.newLocation =
+            {
+                [weak self] result in
+                switch  result
+                {
+                case .success(let location):
+                    self?.loadBusinesses(with: location.coordinate)
+//                    print(location)
+                case .failure(let error):
+                    assertionFailure("Error getting the users location \(error)")
+                }
+        }
+// Pasting above this
         // Override point for customization after application launch.
         
         switch locationService.status
         {
         case .notDetermined, .denied, .restricted:
             let locationViewController = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
-            locationViewController?.locationSerivce = locationService
+            locationViewController?.delegate = self
+//            locationViewController?.locationService = locationService
             window.rootViewController = locationViewController
         default:
-                print("Failed to load location i")
+            let nav = storyboard.instantiateViewController(withIdentifier: "ResturantNavigationController") as? UINavigationController
+            
+            self.navigationController = nav
+            
+            window.rootViewController = nav
+            locationService.getLocation()
+            (nav?.topViewController as? ResturantTableViewController)?.delegate = self
+//            loadBusinesses()
+ //           print("Failed to load location i")
  //           assertionFailure()
         }
         window.makeKeyAndVisible()
         return true
     }
+    
+    private func loadDetails(withId id: String)
+    {
+        service.request(.details(id: id))
+        {
+            [weak self] (result) in
+            switch result
+            {
+            case .success(let response):
+                guard let strongSelf = self else { return }
+               if let details = try? strongSelf.jsonDecoder.decode(Details.self, from: response.data)
+               {
+//                print("Details:\n\n \(details)")
+                    let detailsViewModel = DetailsViewModel(details: details)
+                    (strongSelf.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+                }
+            case .failure(let error):
+                print("Failed to get details \(error)")
+            }
+        }
+    }
+    
+    private func loadBusinesses(with coordinate: CLLocationCoordinate2D)
+    {
+ //       service.request(.search (lat: 37.570950, long: -122.050613))
+        service.request(.search(lat: coordinate.latitude, long: coordinate.longitude))
+        {
+            [weak self] (result) in
+            switch result
+            {
+            case .success(let response):
+                guard let strongSelf = self else { return }
+                let root = try? strongSelf.jsonDecoder.decode(Root.self, from: response.data)
+                let viewModels = root?.businesses.compactMap(ResturantListViewModel.init)
+                    .sorted(by: {$0.distance < $1.distance})
+                //                print(root)
+            //                print(try? JSONSerialization.jsonObject(with: response.data, options: []))
+            if let nav = strongSelf.window.rootViewController as? UINavigationController,
+                let resturantListViewController = nav.topViewController as? ResturantTableViewController
+                {
+                    resturantListViewController.viewModels = viewModels ?? []
+                
+                }
+            
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+}
+
+extension AppDelegate: LocationActions, ListActions
+{
+    func didTapAllow()
+    {
+        locationService.requestLocationAuthorization()
+    }
+    func didTapCell(_ viewModel: ResturantListViewModel)
+    {
+        loadDetails(withId: viewModel.id)
+    }
+}
 /*
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -72,6 +192,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 */
-
-}
-

@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class ResturantTableViewCell: UITableViewCell
 {
-    @IBOutlet weak var resturantImageView: UIImage!
-    @IBOutlet weak var makerImageView: UIImage!
+    @IBOutlet weak var resturantImageView: UIImageView!
+    @IBOutlet weak var makerImageView: UIImageView!
     @IBOutlet weak var resturantNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
@@ -32,5 +33,12 @@ class ResturantTableViewCell: UITableViewCell
 
         // Configure the view for the selected state
     }
-
+    
+    func configure(with viewModel: ResturantListViewModel)
+    {
+        resturantImageView.af_setImage(withURL: viewModel.imageUrl)
+        resturantNameLabel.text = viewModel.name
+        locationLabel.text = viewModel.distance
+    }
+    
 }

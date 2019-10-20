@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		BB5B617BD1FAD5C56455D12C /* Pods_resturantApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C50BAED7345855762A9A86 /* Pods_resturantApp.framework */; };
 		C4365E0B235BF88A00C9AF14 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4365E0A235BF88A00C9AF14 /* NetworkService.swift */; };
+		C4365E0D235C072800C9AF14 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4365E0C235C072800C9AF14 /* Models.swift */; };
+		C4365E12235C0BFA00C9AF14 /* privateYelpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4365E11235C0BFA00C9AF14 /* privateYelpAPI.swift */; };
+		C45548FA235C4E9200A0BB6B /* DetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45548F9235C4E9200A0BB6B /* DetailsCollectionViewCell.swift */; };
 		C47838D2235BCA5300B47DA0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C47838D1235BCA5300B47DA0 /* Podfile */; };
 		C4B1C2CE235AA15D00D97C3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1C2CD235AA15D00D97C3D /* AppDelegate.swift */; };
 		C4B1C2D0235AA15E00D97C3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1C2CF235AA15E00D97C3D /* ViewController.swift */; };
@@ -49,6 +52,9 @@
 		1EFA703AD2636907BDF20335 /* Pods-resturantApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-resturantApp.debug.xcconfig"; path = "Target Support Files/Pods-resturantApp/Pods-resturantApp.debug.xcconfig"; sourceTree = "<group>"; };
 		84C50BAED7345855762A9A86 /* Pods_resturantApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_resturantApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4365E0A235BF88A00C9AF14 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		C4365E0C235C072800C9AF14 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		C4365E11235C0BFA00C9AF14 /* privateYelpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = privateYelpAPI.swift; sourceTree = "<group>"; };
+		C45548F9235C4E9200A0BB6B /* DetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C47838D1235BCA5300B47DA0 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		C4B1C2CA235AA15D00D97C3D /* resturantApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = resturantApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4B1C2CD235AA15D00D97C3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -205,6 +211,7 @@
 			children = (
 				C4B1C301235ACAE900D97C3D /* DetailsFoodView.swift */,
 				C4B1C308235ACF3800D97C3D /* ResturantTableViewCell.swift */,
+				C45548F9235C4E9200A0BB6B /* DetailsCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				C4B1C306235ACED900D97C3D /* ResturantTableViewController.swift */,
+				C4365E0C235C072800C9AF14 /* Models.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -239,6 +247,7 @@
 			children = (
 				C4B1C311235ADB5400D97C3D /* LocationService.swift */,
 				C4365E0A235BF88A00C9AF14 /* NetworkService.swift */,
+				C4365E11235C0BFA00C9AF14 /* privateYelpAPI.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -313,6 +322,7 @@
 				TargetAttributes = {
 					C4B1C2C9235AA15D00D97C3D = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
 					};
 					C4B1C2DD235AA15F00D97C3D = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -412,14 +422,17 @@
 				C4365E0B235BF88A00C9AF14 /* NetworkService.swift in Sources */,
 				C4B1C2FD235AC98E00D97C3D /* BaseView.swift in Sources */,
 				C4B1C30D235AD0A200D97C3D /* LocationView.swift in Sources */,
+				C4365E0D235C072800C9AF14 /* Models.swift in Sources */,
 				C4B1C312235ADB5400D97C3D /* LocationService.swift in Sources */,
 				C4B1C302235ACAE900D97C3D /* DetailsFoodView.swift in Sources */,
 				C4B1C307235ACED900D97C3D /* ResturantTableViewController.swift in Sources */,
 				C4B1C304235ACDD300D97C3D /* DetailsFoodViewController.swift in Sources */,
+				C4365E12235C0BFA00C9AF14 /* privateYelpAPI.swift in Sources */,
 				C4B1C2D0235AA15E00D97C3D /* ViewController.swift in Sources */,
 				C4B1C30F235AD27A00D97C3D /* LocationViewController.swift in Sources */,
 				C4B1C309235ACF3800D97C3D /* ResturantTableViewCell.swift in Sources */,
 				C4B1C2CE235AA15D00D97C3D /* AppDelegate.swift in Sources */,
+				C45548FA235C4E9200A0BB6B /* DetailsCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +606,7 @@
 			baseConfigurationReference = 1EFA703AD2636907BDF20335 /* Pods-resturantApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = resturantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -601,6 +615,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mbutt-student.42.us.org.resturantApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -611,6 +627,7 @@
 			baseConfigurationReference = 0F756FB1C67982776064C063 /* Pods-resturantApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = resturantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -619,6 +636,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mbutt-student.42.us.org.resturantApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

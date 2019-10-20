@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol LocationActions: class
+{
+    func didTapAllow()
+}
+
 class LocationViewController: UIViewController
 {
     
     @IBOutlet weak var locationView: LocationView!
-    var locationSerivce: LocationService?
+    weak var delegate: LocationActions?
+//    var locationSerivce: LocationService?
     
 
     override func viewDidLoad()
@@ -20,11 +26,12 @@ class LocationViewController: UIViewController
         super.viewDidLoad()
         locationView.didTapAllow =
             {
-                [weak self] in
+//                [weak self] in
+                self.delegate?.didTapAllow()
 //                print("tapped allow")
-                self?.locationSerivce?.requestLocationAuthorization()
+//                self?.locationSerivce?.requestLocationAuthorization()
             }
-        
+/*
         locationSerivce?.didChangeStatus =
             {
                 [weak self] success in
@@ -45,6 +52,7 @@ class LocationViewController: UIViewController
                     assertionFailure("Error getting the users location \(error)")
                 }
             }
+*/
     }
     
     

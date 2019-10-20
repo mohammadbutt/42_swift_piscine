@@ -108,29 +108,29 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="kfS-LD-f1L">
                                                     <rect key="frame" x="0.0" y="0.0" width="343" height="303"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="cdl-ky-45X">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="100" restorationIdentifier="ResturantCell" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="cdl-ky-45X">
                                                             <rect key="frame" x="0.0" y="0.0" width="343" height="257"/>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Fn8-Hq-Atx">
                                                             <rect key="frame" x="0.0" y="273" width="343" height="30"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="100" verticalHuggingPriority="251" text="Chicken &amp; Rice" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TT-AB-cEU">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="257.33333333333331" height="30"/>
-                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="259.66666666666669" height="30"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="rwa-HS-8AR">
-                                                                    <rect key="frame" x="273.33333333333331" y="0.0" width="69.666666666666686" height="30"/>
+                                                                    <rect key="frame" x="275.66666666666669" y="0.0" width="67.333333333333314" height="30"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSv-79-XtC">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="23.666666666666668" height="30"/>
-                                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="21.333333333333332" height="30"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-9f-5xV">
-                                                                            <rect key="frame" x="39.666666666666686" y="0.0" width="30" height="30"/>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marker" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-9f-5xV">
+                                                                            <rect key="frame" x="37.333333333333314" y="0.0" width="30" height="30"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="30" id="0zv-OI-Lpy"/>
                                                                                 <constraint firstAttribute="height" constant="30" id="xMo-aW-GXG"/>
@@ -161,6 +161,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="locationLabel" destination="aSv-79-XtC" id="8bL-rK-KJU"/>
+                                    <outlet property="makerImageView" destination="wtV-9f-5xV" id="0W9-7G-ORD"/>
+                                    <outlet property="resturantImageView" destination="cdl-ky-45X" id="nvA-po-uoc"/>
                                     <outlet property="resturantNameLabel" destination="6TT-AB-cEU" id="Lah-mp-Tre"/>
                                     <segue destination="tFt-Wl-hU2" kind="show" id="aTs-bG-cBt"/>
                                 </connections>
@@ -191,13 +193,13 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GFZ-u2-Etc">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="902"/>
                                         <subviews>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nyM-U3-Dwg">
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nyM-U3-Dwg">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="250" id="Wqi-fo-Neh"/>
                                                 </constraints>
-                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Lex-5y-2qU">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Lex-5y-2qU">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -216,6 +218,7 @@
                                             </collectionView>
                                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="t4L-tI-s7R">
                                                 <rect key="frame" x="0.0" y="250" width="375" height="37"/>
+                                                <color key="backgroundColor" red="0.7513453492386013" green="0.82236979976854874" blue="0.93324967616580312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </pageControl>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4x-4b-yyy">
                                                 <rect key="frame" x="0.0" y="287" width="375" height="177"/>
@@ -342,6 +345,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="LVw-xs-Rvc"/>
                     <size key="freeformSize" width="375" height="1024"/>
+                    <connections>
+                        <outlet property="detailsFoodView" destination="OoK-6N-uv0" id="YyQ-vY-7bj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uso-CV-bpp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -350,7 +356,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ZvO-y8-OWS">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xMX-Jh-9t9" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ResturantNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="xMX-Jh-9t9" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="27j-7n-a5M">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -372,5 +378,7 @@
         <image name="IC Star 24px" width="20" height="19"/>
         <image name="IC Store 24px" width="18" height="15"/>
         <image name="location-permission" width="1920" height="1136"/>
+        <image name="marker" width="24" height="24"/>
+        <image name="placeholder" width="343" height="153"/>
     </resources>
 </document>

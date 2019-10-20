@@ -8,44 +8,52 @@
 
 import UIKit
 
-class ResturantTableViewController: UITableViewController {
+protocol ListActions: class
+{
+    func didTapCell(_ viewModel: ResturantListViewModel)
+}
 
-    override func viewDidLoad() {
+
+class ResturantTableViewController: UITableViewController
+{
+    var viewModels = [ResturantListViewModel]()
+    {
+        didSet
+        {
+            tableView.reloadData()
+        }
+    }
+    
+    weak var delegate: ListActions?
+    
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return viewModels.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ResturantCell", for: indexPath) as! ResturantTableViewCell
+        
+        let vm = viewModels[indexPath.row]
+        cell.configure(with: vm)
         // Configure the cell...
-
+        
         return cell
     }
-    */
+// Mark - Delegate
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        let vm = viewModels[indexPath.row]
+        delegate?.didTapCell(vm)
+    }
+}
 
     /*
     // Override to support conditional editing of the table view.
@@ -91,5 +99,3 @@ class ResturantTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-}
