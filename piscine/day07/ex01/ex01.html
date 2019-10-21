@@ -1,0 +1,61 @@
+<!-- Reference: www.youtube.com/watch?v=hDV3_OIci7A&list=WL&index=5&t=11s -->
+<!DOCTYPE html>
+<html>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase.js"></script>
+
+<script> console.log("Hello World"); </script>
+
+
+<script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyDfmxiaLr4qAB63D0QPHoE6yvg5GWZXLDs",
+          authDomain: "day07-ex01.firebaseapp.com",
+          databaseURL: "https://day07-ex01.firebaseio.com",
+          storageBucket: "day07-ex01.appspot.com",
+          messagingSenderId: "144464326159"
+        };
+        firebase.initializeApp(config);
+</script>
+
+Welcome: <div id="username"></div>
+<input id="message" type="text" placeholder="Message" class="box">
+<button type="button" onclick="push()">Submit</button>
+<div id="messages"></div>
+
+
+
+
+<script>
+
+var id = Math.floor(Math.random()*100);
+document.getElementById("username").innerHTML = 'Guest' + id;
+
+function push(){
+//    var message = document.getElementById("message").value;
+//    firebase.database().ref().child('posts').push({id : id, message : message});
+//    console.log('posted message to server');
+
+
+    var message = document.getElementById("message").Value;
+    firebase.database().ref().child('posts').push({id : id, message : message});
+    console.log('posted message to server');
+}
+
+var commentsRef = firebase.database().ref('posts');
+commentsRef.on('child_added', function(data) {
+//    displayChatMessage(data.val());
+    displayChatMessage(data.Val());
+});
+
+function displayChatMessage(data){
+    var messages = document.getElementById('messages');
+    var newMessage = "Guest" + data.id + ": " + data.message;
+    newMessage = "<div>" + newMessage + "</div>";
+    messages.innerHTML = messages.innerHTML + newMessage;
+}
+
+
+</script>
+
+</html>

@@ -1,0 +1,38 @@
+<body>
+      <p>Getting started with Firebase</p>
+      <h1 id="bigOne"></h1>
+      <script>
+            // your firebase JavaScript code here
+		  <!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+     	https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
+
+		<script>
+  		// Your web app's Firebase configuration
+  		var firebaseConfig = {
+    		apiKey: "AIzaSyDlCFtEG9kQCbNsWmxSd1o8Py7q0d4cu4E",
+    		authDomain: "day07-ex00-1.firebaseapp.com",
+    		databaseURL: "https://day07-ex00-1.firebaseio.com",
+    		projectId: "day07-ex00-1",
+    		storageBucket: "day07-ex00-1.appspot.com",
+    		messagingSenderId: "227106543534",
+    		appId: "1:227106543534:web:5099bdc773768f4db29a3f",
+    		measurementId: "G-77QJGL9HXV"
+  };
+  		// Initialize Firebase
+ 		firebase.initializeApp(firebaseConfig);
+  		firebase.analytics();
+
+      // getting the text value from the database
+
+		var bigOne = document.getElementById('bigOne');
+      	var dbRef = firebase.database().ref().child('text');
+      	dbRef.on('value', snap => bigOne.innerText = snap.val());
+
+		</script>
+      </script>
+
+  </body>
